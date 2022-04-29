@@ -1,29 +1,15 @@
-#include <stdio.h>
+#include<stdio.h>
 #include<omp.h>
-int addNumbers(int n);
-
-int main() {
-  int n;
-  int num;
-  printf("Enter a positive integer: ");
-  scanf("%d", &num);
-
- omp_set_num_threads(omp_get_num_procs());
-
-        #pragma omp parallel private(n)
-        {
-                #pragma omp for schedule(dynamic, 1)
-                for (n = 0; n <= num; n++) {
-                        printf("Sum of %d numbers is %d \n", n, addNumbers(n));
-                }
-
-        }
-        return 0;
+#include<math.h>
+int main()
+{
+double sum=0.0;
+int number=50;
+#pragma omp parallel for reduction(+:sum)
+for(int i=0;i<10000;i++)
+{
+    sum = sum + 1/pow(number,i);
 }
-
-int addNumbers(int n) {
-  if (n != 0)
-    return n + addNumbers(n - 1);
-  else
-    return n;
+printf("Sum : %f",sum);
+return 0;
 }
